@@ -9,4 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 2019-04-15 16:30
  */
 public interface CustomerRepository extends JpaRepository<Customer,Integer> {
+    /**
+     * 查询客户
+     * @param customerId 客户id
+     * @return
+     */
+    Customer findCustomerByCustomerId(Integer customerId);
 }

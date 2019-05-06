@@ -1,23 +1,17 @@
 package com.nepenthe.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.nepenthe.demo.Service.CustomerService;
+import com.nepenthe.demo.service.CustomerService;
 import com.nepenthe.demo.config.response.ErrorResponse;
 import com.nepenthe.demo.config.response.Response;
 import com.nepenthe.demo.entity.Customer;
-import com.nepenthe.demo.repository.CustomerRepository;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
-import com.nepenthe.demo.util.redis.RedisManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**

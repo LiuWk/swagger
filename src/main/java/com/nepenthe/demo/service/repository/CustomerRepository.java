@@ -1,4 +1,4 @@
-package com.nepenthe.demo.repository;
+package com.nepenthe.demo.service.repository;
 
 import com.nepenthe.demo.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;

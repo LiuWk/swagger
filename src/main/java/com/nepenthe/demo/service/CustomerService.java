@@ -1,9 +1,7 @@
-package com.nepenthe.demo.Service;
+package com.nepenthe.demo.service;
 
 import com.nepenthe.demo.entity.Customer;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 /**
  * @author lwk

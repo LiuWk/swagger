@@ -1,9 +1,9 @@
-package com.nepenthe.demo.Service.impl;
+package com.nepenthe.demo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.nepenthe.demo.Service.CustomerService;
+import com.nepenthe.demo.service.CustomerService;
 import com.nepenthe.demo.entity.Customer;
-import com.nepenthe.demo.repository.CustomerRepository;
+import com.nepenthe.demo.service.repository.CustomerRepository;
 import com.nepenthe.demo.util.redis.RedisManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
 
 /**
  * @author lwk

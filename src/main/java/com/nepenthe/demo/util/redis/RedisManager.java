@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Redis工具类
+ * Redis工具类      
  * 
  * @author WangFan
  * @date 2018-02-24 下午03:09:50

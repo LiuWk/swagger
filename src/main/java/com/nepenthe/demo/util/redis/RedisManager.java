@@ -336,6 +336,17 @@ public class RedisManager {
 	}
 
 	/**
+	 * 自增
+	 *
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Long incr(String key) {
+		return redisTemplate.opsForValue().increment(key);
+	}
+
+	/**
 	 * 
 	 * @param key
 	 * @param value

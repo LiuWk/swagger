@@ -1,12 +1,15 @@
 package com.nepenthe.demo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.nepenthe.demo.config.request.Request;
 import com.nepenthe.demo.service.CustomerService;
 import com.nepenthe.demo.config.response.ErrorResponse;
 import com.nepenthe.demo.config.response.Response;
 import com.nepenthe.demo.entity.Customer;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
+import com.nepenthe.demo.util.redis.RedisManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -26,12 +29,15 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private RedisManager redisManager;
 
     @ApiOperation(value = "顾客信息", httpMethod = "POST")
     @RequestMapping(value = "customerInfo", method = RequestMethod.POST)
     public Response customerInfo(@RequestBody JSONObject jsonObject) {
         // TODO 传入的报文可以统一切面打印
-        logger.info("customerInfo request={}", jsonObject);
+        logger.info("customerInfo request json={}", jsonObject);
+
         Integer customerId = jsonObject.getInteger("customerId");
         if (customerId == null) {
             return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
@@ -55,6 +61,8 @@ public class CustomerController {
     @RequestMapping(value = "saveCustomer", method = RequestMethod.POST)
     public Response saveCustomer(@RequestBody Customer customer) {
         logger.info("saveCustomer request={}", customer);
+        String key = "";
+       Long count = redisManager.incr(key);
         try {
             customerService.saveCustomer(customer);
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);

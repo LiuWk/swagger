@@ -10,7 +10,7 @@ public enum Code {
      * 错误码相关
      */
     SUCCESS("0000", "操作成功"),
-    ERROR("-9999", "系统异常"),
+    SYSTEM_ERROR("-9999", "系统异常"),
     PARAMETER_IS_NULL("-0001", "参数为空"),
     ;
 

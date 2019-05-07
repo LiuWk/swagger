@@ -37,12 +37,18 @@ public class CustomerController {
     public Response customerInfo(@RequestBody JSONObject jsonObject) {
         // TODO 传入的报文可以统一切面打印
         logger.info("customerInfo request json={}", jsonObject);
-
-        Integer customerId = jsonObject.getInteger("customerId");
-        if (customerId == null) {
-            return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
+        try {
+            JSONObject body = jsonObject.getJSONObject("body");
+            Integer customerId = body.getInteger("customerId");
+            if (customerId == null) {
+                return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
+            }
+            return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), customerService.findCustomerByCustomerId(customerId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("customerInfo exception={}",e);
         }
-        return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), customerService.findCustomerByCustomerId(customerId));
+        return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }
 
     @ApiOperation(value = "顾客列表", httpMethod = "POST")
@@ -59,17 +65,26 @@ public class CustomerController {
 
     @ApiOperation(value = "添加客户", httpMethod = "POST")
     @RequestMapping(value = "saveCustomer", method = RequestMethod.POST)
-    public Response saveCustomer(@RequestBody Customer customer) {
-        logger.info("saveCustomer request={}", customer);
+    public Response saveCustomer(@RequestBody JSONObject jsonObject) {
+        logger.info("saveCustomer request={}", jsonObject);
+        Customer customer = null;
+        try {
+            JSONObject body = jsonObject.getJSONObject("body");
+            customer = JSONObject.parseObject(body.toJSONString(), Customer.class);
+        } catch (Exception e) {
+            logger.error("转换对象异常={}", e);
+            return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
+        }
+
         String key = "";
-       Long count = redisManager.incr(key);
+        Long count = redisManager.incr(key);
         try {
             customerService.saveCustomer(customer);
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);
         } catch (Exception e) {
-            logger.error("saveCustomer exception", e);
+            logger.error("saveCustomer exception={}", e);
         }
-        return new ErrorResponse(Code.ERROR, Constant.getMsg(Code.ERROR));
+        return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }
 
     public static void main(String[] args) {

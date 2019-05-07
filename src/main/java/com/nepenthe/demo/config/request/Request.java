@@ -7,6 +7,10 @@ package com.nepenthe.demo.config.request;
  */
 public class Request {
     /**
+     * 设备id
+     */
+    private String deviceId;
+    /**
      * 登录信息
      */
     private String token;
@@ -20,6 +24,14 @@ public class Request {
      *  服务器返回的毫秒值
      */
     private Long dateTimeMillis;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getToken() {
         return token;

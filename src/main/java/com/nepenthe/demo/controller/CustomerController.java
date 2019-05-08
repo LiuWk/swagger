@@ -15,7 +15,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * @author lwk
@@ -31,6 +34,20 @@ public class CustomerController {
     private CustomerService customerService;
     @Autowired
     private RedisManager redisManager;
+
+    @ApiOperation(value = "测试redis", httpMethod = "POST")
+    @RequestMapping(value = "putRedis", method = RequestMethod.POST)
+    public Response putRedis(@RequestBody JSONObject jsonObject) {
+        long start = System.currentTimeMillis();
+        for (int i=0;i<10001;i++) {
+            String key = UUID.randomUUID().toString();
+            redisManager.incr(key);
+            redisManager.expire(key,60);
+        }
+        System.out.println("时间="+(System.currentTimeMillis()-start));
+        return null;
+    }
+
 
     @ApiOperation(value = "顾客信息", httpMethod = "POST")
     @RequestMapping(value = "customerInfo", method = RequestMethod.POST)
@@ -75,6 +92,8 @@ public class CustomerController {
             logger.error("转换对象异常={}", e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
+
+
 
         String key = "";
         Long count = redisManager.incr(key);

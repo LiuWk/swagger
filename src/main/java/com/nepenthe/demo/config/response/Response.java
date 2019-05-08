@@ -30,20 +30,20 @@ public class Response implements Serializable {
     /**
      * 返回一个当前 服务器时间毫秒值
      */
-    private Long dateTimeMillis;
+    private Long currentTimeMillis;
 
     public Response(Code code, String msg, Object body) {
         this.success = true;
         this.code = code.getCode();
         this.msg = msg;
         this.body = body;
-        this.dateTimeMillis = System.currentTimeMillis();
+        this.currentTimeMillis = System.currentTimeMillis();
     }
 
     public Response(Code code, String msg) {
         this.code = code.getCode();
         this.msg = msg;
-        this.dateTimeMillis = System.currentTimeMillis();
+        this.currentTimeMillis = System.currentTimeMillis();
     }
 
     public Response() {
@@ -83,11 +83,11 @@ public class Response implements Serializable {
         this.body = body;
     }
 
-    public Long getDateTimeMillis() {
-        return dateTimeMillis;
+    public Long getCurrentTimeMillis() {
+        return currentTimeMillis;
     }
 
-    public void setDateTimeMillis(Long dateTimeMillis) {
-        this.dateTimeMillis = dateTimeMillis;
+    public void setCurrentTimeMillis(Long currentTimeMillis) {
+        this.currentTimeMillis = currentTimeMillis;
     }
 }

@@ -1,12 +1,11 @@
 package com.nepenthe.demo.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.nepenthe.demo.config.request.Request;
-import com.nepenthe.demo.service.CustomerService;
+import com.nepenthe.demo.config.annotation.UserLoginToken;
 import com.nepenthe.demo.config.response.ErrorResponse;
 import com.nepenthe.demo.config.response.Response;
 import com.nepenthe.demo.entity.Customer;
+import com.nepenthe.demo.service.CustomerService;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
 import com.nepenthe.demo.util.redis.RedisManager;
@@ -15,8 +14,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
@@ -39,16 +40,17 @@ public class CustomerController {
     @RequestMapping(value = "putRedis", method = RequestMethod.POST)
     public Response putRedis(@RequestBody JSONObject jsonObject) {
         long start = System.currentTimeMillis();
-        for (int i=0;i<10001;i++) {
+        for (int i = 0; i < 10001; i++) {
             String key = UUID.randomUUID().toString();
             redisManager.incr(key);
-            redisManager.expire(key,60);
+            redisManager.expire(key, 60);
         }
-        System.out.println("时间="+(System.currentTimeMillis()-start));
+        System.out.println("时间=" + (System.currentTimeMillis() - start));
         return null;
     }
 
 
+    @UserLoginToken
     @ApiOperation(value = "顾客信息", httpMethod = "POST")
     @RequestMapping(value = "customerInfo", method = RequestMethod.POST)
     public Response customerInfo(@RequestBody JSONObject jsonObject) {
@@ -62,8 +64,7 @@ public class CustomerController {
             }
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), customerService.findCustomerByCustomerId(customerId));
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("customerInfo exception={}",e);
+            logger.error("customerInfo exception={}", e);
         }
         return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }
@@ -92,7 +93,6 @@ public class CustomerController {
             logger.error("转换对象异常={}", e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
-
 
 
         String key = "";

@@ -12,6 +12,8 @@ public enum Code {
     SUCCESS("0000", "操作成功"),
     SYSTEM_ERROR("-9999", "系统异常"),
     PARAMETER_IS_NULL("-0001", "参数为空"),
+    TOKEN_IS_NULL("-0002", "登录状态已失效"),
+    USER_NOT_EXIST("-0003", "用户不存在"),
     ;
 
     private String code;

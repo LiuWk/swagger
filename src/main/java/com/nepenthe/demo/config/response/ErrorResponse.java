@@ -19,6 +19,11 @@ public class ErrorResponse extends Response {
         this.success = false;
     }
 
+    public ErrorResponse(Code code, String msg, Object e) {
+        super(code, msg, e);
+        this.success = false;
+    }
+
     @Override
     public Boolean getSuccess() {
         return success;

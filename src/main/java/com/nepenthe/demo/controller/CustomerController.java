@@ -94,14 +94,19 @@ public class CustomerController {
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
-
         String key = "";
         Long count = redisManager.incr(key);
+        redisManager.expire(key,60);
+        if (count > 1){
+            return new ErrorResponse(Code.DUPLICATE_SUBMISSION, Constant.getMsg(Code.DUPLICATE_SUBMISSION));
+        }
         try {
             customerService.saveCustomer(customer);
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);
         } catch (Exception e) {
             logger.error("saveCustomer exception={}", e);
+        }finally {
+            redisManager.delete(key);
         }
         return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }

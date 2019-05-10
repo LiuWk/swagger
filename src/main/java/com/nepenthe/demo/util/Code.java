@@ -14,6 +14,7 @@ public enum Code {
     PARAMETER_IS_NULL("-0001", "参数为空"),
     TOKEN_IS_NULL("-0002", "登录状态已失效"),
     USER_NOT_EXIST("-0003", "用户不存在"),
+    DUPLICATE_SUBMISSION("-0004", "重复提交"),
     ;
 
     private String code;

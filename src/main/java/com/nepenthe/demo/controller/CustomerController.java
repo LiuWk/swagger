@@ -5,7 +5,9 @@ import com.nepenthe.demo.config.annotation.UserLoginToken;
 import com.nepenthe.demo.config.response.ErrorResponse;
 import com.nepenthe.demo.config.response.Response;
 import com.nepenthe.demo.entity.Customer;
+import com.nepenthe.demo.entity.User;
 import com.nepenthe.demo.service.CustomerService;
+import com.nepenthe.demo.service.UserService;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
 import com.nepenthe.demo.util.redis.RedisManager;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -34,23 +37,36 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private RedisManager redisManager;
 
+    @UserLoginToken(required = false)
     @ApiOperation(value = "测试redis", httpMethod = "POST")
     @RequestMapping(value = "putRedis", method = RequestMethod.POST)
     public Response putRedis(@RequestBody JSONObject jsonObject) {
-        long start = System.currentTimeMillis();
+        /*long start = System.currentTimeMillis();
         for (int i = 0; i < 10001; i++) {
             String key = UUID.randomUUID().toString();
             redisManager.incr(key);
             redisManager.expire(key, 60);
         }
-        System.out.println("时间=" + (System.currentTimeMillis() - start));
+        System.out.println("时间=" + (System.currentTimeMillis() - start));*/
+        Customer customer = new Customer();
+        customer.setCustomerId(1);
+        customer.setFirstName("aaa");
+
+        User user = new User();
+        user.setGender(0);
+        user.setCreateTime(new Date());
+        user.setMobile("12211112222");
+        user.setName("001");
+        userService.saveUser(user);
         return null;
     }
 
 
-    @UserLoginToken
+    @UserLoginToken(required = false)
     @ApiOperation(value = "顾客信息", httpMethod = "POST")
     @RequestMapping(value = "customerInfo", method = RequestMethod.POST)
     public Response customerInfo(@RequestBody JSONObject jsonObject) {
@@ -81,6 +97,7 @@ public class CustomerController {
         return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), customerService.findCustomerList(page, size));
     }
 
+    @UserLoginToken(required = false)
     @ApiOperation(value = "添加客户", httpMethod = "POST")
     @RequestMapping(value = "saveCustomer", method = RequestMethod.POST)
     public Response saveCustomer(@RequestBody JSONObject jsonObject) {
@@ -94,10 +111,10 @@ public class CustomerController {
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
-        String key = "";
+        String key = "11";
         Long count = redisManager.incr(key);
-        redisManager.expire(key,60);
-        if (count > 1){
+        redisManager.expire(key, 60);
+        if (count > 1) {
             return new ErrorResponse(Code.DUPLICATE_SUBMISSION, Constant.getMsg(Code.DUPLICATE_SUBMISSION));
         }
         try {
@@ -105,7 +122,7 @@ public class CustomerController {
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);
         } catch (Exception e) {
             logger.error("saveCustomer exception={}", e);
-        }finally {
+        } finally {
             redisManager.delete(key);
         }
         return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));

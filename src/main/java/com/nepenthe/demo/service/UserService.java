@@ -13,4 +13,10 @@ public interface UserService {
      * @return
      */
     User findUserById(Integer userId);
+
+    /**
+     * 保存用户
+     * @param user
+     */
+    void saveUser(User user);
 }

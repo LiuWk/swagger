@@ -93,6 +93,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 }
                 return true;
             }
+            return true;
         }
 
         throw new BaseServiceException(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR), "系统异常");

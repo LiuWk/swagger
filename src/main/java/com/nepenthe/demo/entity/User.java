@@ -20,8 +20,10 @@ public class User {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createTime;
 
+  private Object obj;
+
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Integer getId() {
     return id;
   }
@@ -77,4 +79,6 @@ public class User {
   public void setCreateTime(Date createTime) {
     this.createTime = createTime;
   }
+
+
 }

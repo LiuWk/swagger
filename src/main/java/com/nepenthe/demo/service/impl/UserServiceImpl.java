@@ -21,4 +21,10 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Integer userId) {
         return userRepository.findUserById(userId);
     }
+
+    @Transactional
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 }

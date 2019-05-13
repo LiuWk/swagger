@@ -10,9 +10,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Integer> {
     /**
      * 查询用户
+     *
      * @param id
      * @return
      */
     User findUserById(Integer id);
 
+    /**
+     * 根据手机号查询用户
+     *
+     * @param mobile
+     * @return
+     */
+    User findUserByMobile(String mobile);
 }

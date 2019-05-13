@@ -22,6 +22,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserById(userId);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public User findUserByMobile(String mobile) {
+        return userRepository.findUserByMobile(mobile);
+    }
+
     @Transactional
     @Override
     public void saveUser(User user) {

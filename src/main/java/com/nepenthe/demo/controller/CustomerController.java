@@ -2,8 +2,8 @@ package com.nepenthe.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.nepenthe.demo.config.annotation.UserLoginToken;
-import com.nepenthe.demo.config.response.ErrorResponse;
-import com.nepenthe.demo.config.response.Response;
+import com.nepenthe.demo.dto.response.ErrorResponse;
+import com.nepenthe.demo.dto.response.Response;
 import com.nepenthe.demo.entity.Customer;
 import com.nepenthe.demo.entity.User;
 import com.nepenthe.demo.service.CustomerService;
@@ -22,15 +22,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author lwk
  * @date 2019-04-15 15:19
  */
-@Api(tags = "测试")
-@RestController
-@RequestMapping(value = "customer")
+@Api(tags = "客户相关")
+@RestController(value = "customer")
 public class CustomerController {
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 

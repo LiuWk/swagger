@@ -28,7 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019-05-13 09:05
  */
 @Api("用户相关")
-@RestController(value = "user")
+@RestController
+@RequestMapping(value = "user")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
@@ -36,7 +37,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @UserLoginToken(required = false)
     @ApiOperation(value = "用户登录", httpMethod = "POST")
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public Response login(@RequestBody JSONObject jsonObject) {

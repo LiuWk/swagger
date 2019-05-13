@@ -1,6 +1,5 @@
 package com.nepenthe.demo.config.interceptor;
 
-import com.nepenthe.demo.config.interceptor.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,7 +21,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 // 拦截的路径
                 .addPathPatterns("/**")
                 // 添加不拦截路径
-                .excludePathPatterns("/","/login","/error","/static/**","/logout");
+                .excludePathPatterns("/","/user/login","/error","/static/**","/user/logout");
     }
 
 }

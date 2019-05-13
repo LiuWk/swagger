@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 /**
+ * 客户相关接口
+ *
  * @author lwk
  * @date 2019-04-15 15:19
  */
 @Api(tags = "客户相关")
-@RestController(value = "customer")
+@RestController
+@RequestMapping(value = "customer")
 public class CustomerController {
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
@@ -68,8 +71,6 @@ public class CustomerController {
     @ApiOperation(value = "顾客信息", httpMethod = "POST")
     @RequestMapping(value = "customerInfo", method = RequestMethod.POST)
     public Response customerInfo(@RequestBody JSONObject jsonObject) {
-        // TODO 传入的报文可以统一切面打印
-        logger.info("customerInfo request json={}", jsonObject);
         try {
             JSONObject body = jsonObject.getJSONObject("body");
             Integer customerId = body.getInteger("customerId");
@@ -86,7 +87,6 @@ public class CustomerController {
     @ApiOperation(value = "顾客列表", httpMethod = "POST")
     @RequestMapping(value = "customerList", method = RequestMethod.POST)
     public Response customerList(@RequestBody JSONObject jsonObject) {
-        logger.info("customerInfo request={}", jsonObject);
         Integer page = jsonObject.getInteger("page");
         Integer size = jsonObject.getInteger("size");
         page = page == null ? 1 : page;
@@ -99,7 +99,6 @@ public class CustomerController {
     @ApiOperation(value = "添加客户", httpMethod = "POST")
     @RequestMapping(value = "saveCustomer", method = RequestMethod.POST)
     public Response saveCustomer(@RequestBody JSONObject jsonObject) {
-        logger.info("saveCustomer request={}", jsonObject);
         Customer customer = null;
         try {
             JSONObject body = jsonObject.getJSONObject("body");

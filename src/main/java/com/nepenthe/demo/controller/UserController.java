@@ -1,8 +1,7 @@
 package com.nepenthe.demo.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.nepenthe.demo.config.annotation.UserLoginToken;
 import com.nepenthe.demo.dto.LoginDto;
+import com.nepenthe.demo.dto.request.Request;
 import com.nepenthe.demo.dto.response.ErrorResponse;
 import com.nepenthe.demo.dto.response.Response;
 import com.nepenthe.demo.entity.User;
@@ -10,15 +9,16 @@ import com.nepenthe.demo.service.UserService;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
 import com.nepenthe.demo.util.TokenUtil;
+import com.nepenthe.demo.util.Utils;
 import com.nepenthe.demo.util.redis.RedisManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,14 +39,17 @@ public class UserController {
 
     @ApiOperation(value = "用户登录", httpMethod = "POST")
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public Response login(@RequestBody JSONObject jsonObject) {
-        logger.info("login request={}", jsonObject);
+    public Response login(@RequestParam(value = "json") String json) {
+        logger.info("login json={}", json);
         String mobile;
         String password;
         try {
-            JSONObject body = jsonObject.getJSONObject("body");
-            mobile = body.getString("mobile");
-            password = body.getString("password");
+            Request req = Utils.getRequest(json);
+            if (req == null) {
+                return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
+            }
+            mobile = req.getBody().getString("mobile");
+            password = req.getBody().getString("password");
             if (Constant.hasEmpty(mobile, password)) {
                 return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
             }
@@ -57,9 +60,10 @@ public class UserController {
 
         String key = "loginkey";
         Long count = redisManager.incr(key);
-        redisManager.expire(key, 60);
         if (count > 1) {
             return new ErrorResponse(Code.DUPLICATE_SUBMISSION, Constant.getMsg(Code.DUPLICATE_SUBMISSION));
+        } else {
+            redisManager.expire(key, 60);
         }
         try {
             User user = userService.findUserByMobile(mobile);
@@ -67,7 +71,7 @@ public class UserController {
                 return new ErrorResponse(Code.USER_NOT_EXIST, Constant.getMsg(Code.USER_NOT_EXIST));
             }
             // TODO 验证密码是否正确，先简单验证
-            if (!user.getPassword().equals(password)){
+            if (!user.getPassword().equals(password)) {
                 return new ErrorResponse(Code.PASSWORD_IS_INCORRECT, Constant.getMsg(Code.PASSWORD_IS_INCORRECT));
             }
 

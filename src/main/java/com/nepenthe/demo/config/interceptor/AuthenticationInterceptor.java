@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 拦截器，自定义异常处理
+ * 数据解密
  *
  * @author lwk
  * @date 2019-05-08 10:39
@@ -100,7 +101,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        throw new BaseServiceException(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR), "系统异常");
+        throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), "系统异常");
     }
 
     /**

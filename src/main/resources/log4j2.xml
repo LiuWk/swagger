@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 设置log4j2的自身log级别为warn -->
 <!-- OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
-<configuration status="INFO" monitorInterval="30">
+<configuration status="WARN" monitorInterval="30">
     <appenders>
         <console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
@@ -43,18 +43,24 @@
                 <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
         </RollingFile>
+
     </appenders>
 
     <loggers>
-        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
-        <logger name="org.springframework" level="INFO"/>
-        <logger name="org.mybatis" level="INFO"/>
         <root level="INFO">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileInfo"/>
             <appender-ref ref="RollingFileWarn"/>
             <appender-ref ref="RollingFileError"/>
         </root>
+        <!-- 打印sql语句 -->
+        <Logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+        <!-- 打印sql语句的参数绑定 -->
+        <Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
     </loggers>
 
 </configuration>

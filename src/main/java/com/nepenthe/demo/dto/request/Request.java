@@ -1,5 +1,7 @@
 package com.nepenthe.demo.dto.request;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 请求报文公共字段
  * @author lwk
@@ -18,7 +20,7 @@ public class Request {
     /**
      * 参数
      */
-    private Object body;
+    private JSONObject body;
 
     /**
      *  服务器返回的毫秒值
@@ -41,11 +43,11 @@ public class Request {
         this.token = token;
     }
 
-    public Object getBody() {
+    public JSONObject getBody() {
         return body;
     }
 
-    public void setBody(Object body) {
+    public void setBody(JSONObject body) {
         this.body = body;
     }
 

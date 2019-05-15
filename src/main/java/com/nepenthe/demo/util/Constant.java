@@ -1,7 +1,5 @@
 package com.nepenthe.demo.util;
 
-import org.springframework.util.StringUtils;
-
 import java.util.regex.Pattern;
 
 /**
@@ -16,8 +14,10 @@ public class Constant {
     public static final long MONTH_TIME = 3600 * 24 * 7 * 30;
 
     //##################### redis 相关key ############################
+
     public static final String USER_TOKEN = "user:token:uid_%s";
     public static final String USER_LOGIN_LOCK = "user:login:lock:mobile_%s";
+    public static final String USER_REGISTER_LOCK = "user:register:lock:mobile_%s";
     public static final String USER_INFO = "user:info:mobile_%s";
 
     public static final String CUSTOMER_INFO = "customer:info:cid_%s";

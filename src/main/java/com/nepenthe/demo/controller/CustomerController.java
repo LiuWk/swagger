@@ -7,6 +7,7 @@ import com.nepenthe.demo.dto.response.ErrorResponse;
 import com.nepenthe.demo.dto.response.Response;
 import com.nepenthe.demo.entity.Customer;
 import com.nepenthe.demo.service.CustomerService;
+import com.nepenthe.demo.service.LockService;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
 import com.nepenthe.demo.util.Utils;
@@ -36,7 +37,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
     @Autowired
-    private RedisManager redisManager;
+    private LockService lockService;
 
     @UserLoginToken(required = false)
     @ApiOperation(value = "测试", httpMethod = "POST")
@@ -108,12 +109,10 @@ public class CustomerController {
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
-        String key = String.format(Constant.CUSTOMER_INFO_LOCK, token);
-        Long count = redisManager.incr(key);
-        if (count > 1) {
-            return new ErrorResponse(Code.DUPLICATE_SUBMISSION, Constant.getMsg(Code.DUPLICATE_SUBMISSION));
-        } else {
-            redisManager.expire(key, 60);
+        String lockKey = String.format(Constant.CUSTOMER_INFO_LOCK, token);
+        Response lockResp = lockService.addLock(lockKey);
+        if (!lockResp.getSuccess()) {
+            return lockResp;
         }
 
         try {
@@ -122,7 +121,7 @@ public class CustomerController {
         } catch (Exception e) {
             logger.error("saveCustomer exception={}", e);
         } finally {
-            redisManager.delete(key);
+            lockService.deleteLock(lockKey);
         }
         return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }

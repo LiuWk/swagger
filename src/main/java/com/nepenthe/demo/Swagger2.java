@@ -29,7 +29,6 @@ public class Swagger2 {
 
     @Bean
     public Docket createRestApi() {
-        System.out.println(swaggerEnabled);
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 // 是否开启
                 .enable(swaggerEnabled).select()

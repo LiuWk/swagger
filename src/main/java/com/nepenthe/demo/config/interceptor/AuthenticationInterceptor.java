@@ -7,14 +7,18 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.nepenthe.demo.config.annotation.UserLoginToken;
+import com.nepenthe.demo.dto.request.Request;
 import com.nepenthe.demo.dto.response.ErrorResponse;
 import com.nepenthe.demo.entity.User;
 import com.nepenthe.demo.service.UserService;
 import com.nepenthe.demo.util.Code;
 import com.nepenthe.demo.util.Constant;
+import com.nepenthe.demo.util.Utils;
+import com.nepenthe.demo.util.redis.RedisManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
@@ -43,6 +47,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisManager redisManager;
 
     @ExceptionHandler(BaseServiceException.class)
     public ErrorResponse baseServiceException(BaseServiceException e) {
@@ -54,9 +60,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws RuntimeException {
-        /**
-         * TODO 打印请求的数据
-         */
         logger.info("[http request] <=====> url={} , json={}", request.getRequestURI(), request.getParameter("json"));
 
         // 如果不是映射到方法直接通过
@@ -64,27 +67,39 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // 从 http 中取出 token
-        String token = getHttpToken(request.getParameter("json"));
-
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
 
         //检查有没有需要用户权限的注解
         if (method.isAnnotationPresent(UserLoginToken.class)) {
+            // 从 http 中取出 token
+            Request req = Utils.getRequest(request.getParameter("json"));
+            if (req == null) {
+                throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), "登录状态已失效");
+            }
+
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {
                 // 执行认证
-                if (token == null) {
-                    throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), "验证登录异常");
+                String token = req.getToken();
+                if (StringUtils.isEmpty(token)) {
+                    throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), "登录状态已失效");
                 }
+
                 // 获取 token 中的 userId
                 Integer userId;
                 try {
                     userId = Integer.valueOf(JWT.decode(token).getAudience().get(0));
+                    // 验证token是否失效
+                    String key = String.format(Constant.USER_TOKEN, userId);
+                    String tokenJson = redisManager.get(key);
+                    if (StringUtils.isEmpty(tokenJson) || !tokenJson.equals(token)) {
+                        throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), "登录状态已失效");
+                    }
                 } catch (JWTDecodeException e) {
                     throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), e.getMessage());
                 }
+
                 User user = userService.findUserById(userId);
                 if (user == null) {
                     throw new BaseServiceException(Code.USER_NOT_EXIST, Constant.getMsg(Code.USER_NOT_EXIST), "用户信息不存在");
@@ -104,6 +119,16 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         throw new BaseServiceException(Code.TOKEN_IS_NULL, Constant.getMsg(Code.TOKEN_IS_NULL), "系统异常");
     }
 
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView
+            modelAndView) {
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception
+            ex) {
+    }
+
     /**
      * 根据请求参数json取出token信息
      *
@@ -112,6 +137,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      */
     private String getHttpToken(String json) {
         try {
+            Request request = Utils.getRequest(json);
+            if (request == null) {
+                return null;
+            }
+
             JSONObject jsonObj = JSONObject.parseObject(json);
             if (jsonObj != null) {
                 return jsonObj.getString("token");
@@ -122,20 +152,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         return null;
     }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView
-            modelAndView) {
-
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception
-            ex) {
-
-    }
-
     /**
-     * 流被关闭
+     * 流被关闭，改用表单，jason=JSONString
      * <p>
      * Resolved [org.springframework.http.converter.HttpMessageNotReadableException: I/O error while reading input message;
      * nested exception is java.io.IOException: Stream closed]
@@ -143,7 +161,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      * @param request
      * @return
      */
-
+    @Deprecated
     private Object getBody(HttpServletRequest request) {
         BufferedReader bufferedReader = null;
         try {

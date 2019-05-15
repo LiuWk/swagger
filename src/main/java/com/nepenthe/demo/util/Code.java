@@ -16,6 +16,8 @@ public enum Code {
     USER_NOT_EXIST("-0003", "用户不存在"),
     DUPLICATE_SUBMISSION("-0004", "重复提交"),
     PASSWORD_IS_INCORRECT("-0005", "密码不正确"),
+    MOBILE_FORMAT_INCORRECT("-0006", "手机号码格式不正确"),
+    USER_EXIST("-0007", "用户已存在"),
     ;
 
     private String code;

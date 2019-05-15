@@ -95,18 +95,20 @@ public class CustomerController {
     @RequestMapping(value = "saveCustomer", method = RequestMethod.POST)
     public Response saveCustomer(@RequestParam(value = "json") String json) {
         Customer customer = null;
+        String token = null;
         try {
             Request req = Utils.getRequest(json);
             if (req == null) {
                 return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
             }
-            customer = JSONObject.parseObject(req.getBody().toJSONString(), Customer.class);
+            token = req.getToken();
+            customer = req.getBody().toJavaObject(Customer.class);
         } catch (Exception e) {
             logger.error("转换对象异常={}", e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
-        String key = "11";
+        String key = String.format(Constant.CUSTOMER_INFO_LOCK, token);
         Long count = redisManager.incr(key);
         if (count > 1) {
             return new ErrorResponse(Code.DUPLICATE_SUBMISSION, Constant.getMsg(Code.DUPLICATE_SUBMISSION));

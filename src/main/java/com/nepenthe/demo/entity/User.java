@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Table(name = "user")
 public class User {
-
   private Integer id;
   private String name;
   private Integer gender;

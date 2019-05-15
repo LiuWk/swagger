@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.nepenthe.demo.service.CustomerService;
 import com.nepenthe.demo.entity.Customer;
 import com.nepenthe.demo.service.repository.CustomerRepository;
+import com.nepenthe.demo.util.Constant;
 import com.nepenthe.demo.util.redis.RedisManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,12 +27,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     @Override
     public Customer findCustomerByCustomerId(Integer customerId) {
-        String key = String.format("CUSTOMER_ID_%s", customerId);
+        String key = String.format(Constant.CUSTOMER_INFO, customerId);
         String json = redisManager.get(key);
         if (StringUtils.isEmpty(json)) {
             Customer c = customerRepository.findCustomerByCustomerId(customerId);
             if (c != null) {
-                redisManager.set(key, JSONObject.toJSONString(c));
+                redisManager.set(key, JSONObject.toJSONString(c), Constant.MONTH_TIME);
             }
             return c;
         } else {
@@ -45,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll(PageRequest.of(page, size));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void saveCustomer(Customer customer) {
         customerRepository.save(customer);

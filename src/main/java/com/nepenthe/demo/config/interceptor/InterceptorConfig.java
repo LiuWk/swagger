@@ -21,7 +21,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 // 拦截的路径
                 .addPathPatterns("/**")
                 // 添加不拦截路径
-                .excludePathPatterns("/","/user/login","/error","/static/**","/user/logout");
+                .excludePathPatterns("/","/user/login","/user/register","/error","/user/logout")
+                // swagger2 不拦截
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/*.html", "/**/*.html","/csrf","/webjars/**","/**/swagger-resources/**");
     }
 
 }

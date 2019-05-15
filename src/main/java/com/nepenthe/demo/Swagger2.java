@@ -1,6 +1,7 @@
 package com.nepenthe.demo;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -20,15 +21,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2 {
 
-    //是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
-//    @Value(value = "${swagger.enabled}")
-//    Boolean swaggerEnabled ;
+    /**
+     * 是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
+     */
+    @Value(value = "${swagger.enabled}")
+    Boolean swaggerEnabled;
 
     @Bean
     public Docket createRestApi() {
+        System.out.println(swaggerEnabled);
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 // 是否开启
-                .enable(true).select()
+                .enable(swaggerEnabled).select()
                 // 扫描有注解的方法
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 // 指定路径处理PathSelectors.any()代表所有的路径
@@ -37,10 +41,10 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot-Swagger2集成和使用-demo示例")
-                .description("测试用")
+                .title("cloud demo")
+                .description("接口")
                 // 作者信息
-                .contact(new Contact("lwk",null,"lwk_mail@126.com"))
+                .contact(new Contact("lwk", null, "lwk_mail@126.com"))
                 .version("1.0.0")
                 .build();
     }

@@ -193,6 +193,16 @@ public class RedisManager {
     }
 
     /**
+     * 设置指定key
+     * @param key key
+     * @param value 具体值
+     * @param timeout 失效时间 秒
+     */
+    public void set(String key, String value,long timeout) {
+        redisTemplate.opsForValue().set(key, value,timeout,TimeUnit.SECONDS);
+    }
+
+    /**
      * 获取指定 key 的值
      *
      * @param key

@@ -1,5 +1,7 @@
 package com.nepenthe.demo.service;
 
+import com.nepenthe.demo.dto.LoginDto;
+import com.nepenthe.demo.dto.RegisterDto;
 import com.nepenthe.demo.entity.User;
 
 /**
@@ -9,6 +11,7 @@ import com.nepenthe.demo.entity.User;
 public interface UserService {
     /**
      * 查询用户
+     *
      * @param userId
      * @return
      */
@@ -16,6 +19,7 @@ public interface UserService {
 
     /**
      * 根据手机号查询用户
+     *
      * @param mobile
      * @return
      */
@@ -23,7 +27,23 @@ public interface UserService {
 
     /**
      * 保存用户
+     *
      * @param user
      */
     void saveUser(User user);
+
+    /**
+     * 用户注册
+     *
+     * @param registerDto
+     */
+    User userRegister(RegisterDto registerDto);
+
+    /**
+     * 用户登录
+     *
+     * @param user
+     * @return
+     */
+    LoginDto login(User user);
 }

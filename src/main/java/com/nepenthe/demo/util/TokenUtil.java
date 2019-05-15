@@ -3,8 +3,10 @@ package com.nepenthe.demo.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.nepenthe.demo.entity.User;
+import com.nepenthe.demo.util.redis.RedisManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 生成token工具
@@ -14,14 +16,13 @@ import org.slf4j.LoggerFactory;
  */
 public class TokenUtil {
     private static final Logger logger = LoggerFactory.getLogger(TokenUtil.class);
-
     /**
      * TODO 自定义一个token生成规则
      * @param user
      * @return
      */
     public static String getToken(User user) {
-        if (Constant.hasEmpty(user, user.getId(), user.getPassword())) {
+        if (Utils.hasEmpty(user, user.getId(), user.getPassword())) {
             return "";
         }
         String token = "";

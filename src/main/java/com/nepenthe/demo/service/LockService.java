@@ -3,7 +3,7 @@ package com.nepenthe.demo.service;
 import com.nepenthe.demo.dto.response.Response;
 
 /**
- * 通用锁
+ * 通用锁服务
  * @author lwk
  * @date 2019-05-15 17:50
  */

@@ -75,6 +75,9 @@ public class UserController {
             if (user == null) {
                 return new ErrorResponse(Code.USER_NOT_EXIST, Constant.getMsg(Code.USER_NOT_EXIST));
             }
+            /**
+             * 密码比较，前端加密完传递过来
+             */
             if (!password.equals(user.getPassword())) {
                 return new ErrorResponse(Code.PASSWORD_IS_INCORRECT, Constant.getMsg(Code.PASSWORD_IS_INCORRECT));
             }
@@ -143,6 +146,7 @@ public class UserController {
                 LoginDto loginDto = userService.login(user);
                 return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), loginDto);
             }
+
         } catch (Exception e) {
             logger.error("register exception={}", e);
         } finally {

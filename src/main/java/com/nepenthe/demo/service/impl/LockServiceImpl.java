@@ -35,7 +35,10 @@ public class LockServiceImpl implements LockService {
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);
         } catch (Exception e) {
             logger.error("addLock exception={}",e);
+            // 出现异常设置个失效时间
+            redisManager.expire(lockKey, 10);
         }
+
         return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }
 

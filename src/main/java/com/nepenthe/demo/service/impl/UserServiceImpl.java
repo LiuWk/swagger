@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
         loginDto.setMobile(user.getMobile());
         loginDto.setToken(token);
         loginDto.setUserId(user.getId());
+        userRepository.updateLastLoginTimeById(user.getId());
         return loginDto;
     }
 }

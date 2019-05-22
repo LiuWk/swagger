@@ -23,4 +23,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * @return
      */
     User findUserByMobile(String mobile);
+    
+    /**
+     * 更新最近登录时间
+     *
+     * @param userId
+     */
+    @Query(value = "UPDATE USER  SET last_login_time = SYSDATE() WHERE id = ?1 ", nativeQuery = true)
+    void updateLastLoginTimeById(Integer userId);
 }

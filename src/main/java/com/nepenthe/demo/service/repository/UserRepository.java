@@ -29,6 +29,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      *
      * @param userId
      */
+    @Modifying
     @Query(value = "UPDATE USER  SET last_login_time = SYSDATE() WHERE id = ?1 ", nativeQuery = true)
     void updateLastLoginTimeById(Integer userId);
 }

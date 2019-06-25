@@ -57,9 +57,21 @@ spring:
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     tomcat:
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #发邮件配置
+  mail:
+    host: smtp.126.com
+    username: lwk_mail@126.com
+    password: liuweikang1900
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   jpa:
     # 日志中显示sql语句
-#    show-sql: true
+    #    show-sql: true
     hibernate:
       # 自动更新
       ddl-auto: update

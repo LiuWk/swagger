@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <localRepository>D:/maven/local</localRepository>
+
+    <mirrors>
+        <!--阿里云镜像-->
+        <mirror>  
+                 
+            <id>nexus-aliyun</id>
+            <name>nexus-aliyun</name>
+                  <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
+                  <mirrorOf>central</mirrorOf>          
+                
+        </mirror>
+
+    </mirrors>
+
+    <profiles>
+        <profile>
+            <!-- id必须唯一 -->
+            <id>nexus-aliyun</id>
+            <repositories>
+                <repository>
+                    <!-- id必须唯一 -->
+                    <id>aliyun-repository</id>
+                    <!-- 见名知意即可 -->
+                    <name>aliyun repository</name>
+                    <!-- 仓库的url地址 -->
+                    <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+                </repository>
+            </repositories>
+
+        </profile>
+
+    </profiles>
+
+</settings>

@@ -14,6 +14,18 @@ spring:
     filters: stat,wall,log4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    #发邮件配置
+    mail:
+      host: smtp.126.com
+      username: lwk_mail@126.com
+      password: liuweikang1900
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+              required: true
   jpa:
     hibernate:
     # 自动更新

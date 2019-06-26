@@ -2,11 +2,11 @@ package com.nepenthe.demo.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormat;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -76,5 +76,20 @@ public class Constant {
         Date start = new DateTime().plusDays(-1).withTimeAtStartOfDay().toDate();
         System.out.println(end);
         System.out.println(start);
+        // 范围精确到周
+        Period period = new Period(DateTime.parse("19170611", DateTimeFormat.forPattern("yyyyMMdd")).toLocalDate(), DateTime.now().toLocalDate(), PeriodType.yearWeekDay());
+        System.out.println(period.getYears());
+        Map<String,String> hmap = new HashMap<>();
+        hmap.put("registerPlatform","111");
+        if (!"1206".equals(hmap.get("registerPlatform")) && !"11".equals(hmap.get("registerPlatform"))) {
+            System.out.println("1212");
+        }
+
+        long size = 20L;
+        long page = (long) Math.ceil(100/size);
+
+        for (long i = 0; i < page; i++) {
+            System.out.println("from="+i);
+        }
     }
 }

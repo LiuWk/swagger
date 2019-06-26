@@ -6,17 +6,20 @@
 
     <localRepository>D:/maven/local</localRepository>
 
-    <mirrors>
-        <!--阿里云镜像-->
-        <mirror>  
-                 
-            <id>nexus-aliyun</id>
-            <name>nexus-aliyun</name>
-                  <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
-                  <mirrorOf>central</mirrorOf>          
-                
-        </mirror>
+    <pluginGroups>
+        <pluginGroup>org.mortbay.jetty</pluginGroup>
+    </pluginGroups>
 
+    <proxies></proxies>
+
+
+    <mirrors>
+        <mirror>
+            <id>nexus-aliyun</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Nexus Aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </mirror>
     </mirrors>
 
     <profiles>
@@ -33,9 +36,8 @@
                     <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
                 </repository>
             </repositories>
-
         </profile>
-
     </profiles>
+
 
 </settings>

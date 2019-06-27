@@ -13,6 +13,10 @@ public class Request {
      */
     private String deviceId;
     /**
+     * 交易id 用来跟踪日志
+     */
+    private String traceId;
+    /**
      * 登录信息
      */
     private String token;
@@ -57,5 +61,13 @@ public class Request {
 
     public void setDateTimeMillis(Long dateTimeMillis) {
         this.dateTimeMillis = dateTimeMillis;
+    }
+
+    public String getTraceId() {
+        return traceId;
+    }
+
+    public void setTraceId(String traceId) {
+        this.traceId = traceId;
     }
 }

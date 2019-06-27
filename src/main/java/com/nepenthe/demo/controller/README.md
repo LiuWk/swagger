@@ -5,7 +5,7 @@
 **请求示例**
  
    ```
-     {   
+     {  "traceId":"20190101010000",
         "deviceId": "value", 
         "token": "value", 
         "body": { 
@@ -26,6 +26,7 @@
 
 |参数名 |类型 |是否为空 |说明 |
 |:----- |:----- |:----- |-----|
+|traceId |String| 是  |交易id，用来跟踪日志  |
 |deviceId |String| 是  |用户登录设备号  |
 |token |String   |是|用户登录token  |
 |body |JSONObject   |是|请求参数对象json格式  |

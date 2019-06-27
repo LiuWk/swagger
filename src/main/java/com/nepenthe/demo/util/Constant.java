@@ -6,6 +6,7 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormat;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -44,23 +45,6 @@ public class Constant {
 
 
     public static void main(String[] args) {
-        System.out.println();
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(9);
-        list.add(12);
-        list.add(10);
-
-        try {
-            assert 1==11;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        list.stream().sorted();
-        System.out.println(list);
-        System.out.println(new StringBuilder("300000071").reverse().toString());
-
         //今天凌晨
         Date endTime = LocalDateTime.parse("2019-06-11", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate() ;
         //昨日凌晨
@@ -85,11 +69,11 @@ public class Constant {
             System.out.println("1212");
         }
 
-        long size = 20L;
-        long page = (long) Math.ceil(100/size);
-
-        for (long i = 0; i < page; i++) {
-            System.out.println("from="+i);
+        try {
+            // 执行脚本，命令
+            Runtime.getRuntime().exec("notepad.exe");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

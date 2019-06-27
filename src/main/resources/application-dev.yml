@@ -71,7 +71,7 @@ spring:
             required: true
   jpa:
     # 日志中显示sql语句
-    #    show-sql: true
+    show-sql: true
     hibernate:
       # 自动更新
       ddl-auto: update

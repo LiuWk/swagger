@@ -19,7 +19,7 @@ public class ThreadPoolTest {
 
     @Test
     public void threadPoolTest() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
 
             threadPoolTaskExecutor.execute(() -> {
                 System.out.println(Thread.currentThread().getName() + "线程中");

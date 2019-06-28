@@ -75,8 +75,6 @@ spring:
     hibernate:
       # 自动更新
       ddl-auto: update
-
-
   # redis配置
   redis:
     host: 127.0.0.1
@@ -94,6 +92,12 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 50MB
+  # 线程池配置
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 20
 
 # 监控关闭
 management:
@@ -107,3 +111,5 @@ logging:
 # 是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
 swagger:
   enabled: true
+
+

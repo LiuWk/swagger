@@ -19,6 +19,7 @@ public class DemoApplicationTests {
     @Autowired
     private JavaMailSender javaMailSender;
 
+
     @Test
     public void sendSimpleMail() {
         String to = "liuweikang@jiayuan.com";
@@ -40,4 +41,6 @@ public class DemoApplicationTests {
 //            logger.error("EmailSenderUtil sendSimpleMail exception={}", e.getMessage());
         }
     }
+
+
 }

@@ -69,11 +69,6 @@ public class Constant {
             System.out.println("1212");
         }
 
-        try {
-            // 执行脚本，命令
-            Runtime.getRuntime().exec("notepad.exe");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("法法");
     }
 }

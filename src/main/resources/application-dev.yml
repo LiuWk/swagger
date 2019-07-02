@@ -112,4 +112,8 @@ logging:
 swagger:
   enabled: true
 
-
+zk:
+  zkServer: "10.240.169.114:2181"
+  sessionTimeoutMs: 10000
+  baseSleepTimeMs: 1000
+  maxRetries: 5

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 /**
  * @author lwk
  * @date 2019-05-08 10:39
@@ -34,4 +36,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Query(value = "UPDATE USER  SET last_login_time = SYSDATE() WHERE id = ?1 ", nativeQuery = true)
     void updateLastLoginTimeById(Integer userId);
+
 }

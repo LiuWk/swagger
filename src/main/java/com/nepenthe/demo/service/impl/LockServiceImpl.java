@@ -34,7 +34,7 @@ public class LockServiceImpl implements LockService {
             }
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);
         } catch (Exception e) {
-            logger.error("addLock exception={}",e);
+            logger.error("addLock exception={}",e.getMessage());
             // 出现异常设置个失效时间
             redisManager.expire(lockKey, 10);
         }
@@ -47,7 +47,7 @@ public class LockServiceImpl implements LockService {
         try {
             redisManager.delete(lockKey);
         } catch (Exception e) {
-            logger.error("deleteLock exception={}",e);
+            logger.error("deleteLock exception={}",e.getMessage());
         }
     }
 }

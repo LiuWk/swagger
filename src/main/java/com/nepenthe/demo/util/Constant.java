@@ -6,8 +6,7 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormat;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -46,12 +45,12 @@ public class Constant {
 
     public static void main(String[] args) {
         //今天凌晨
-        Date endTime = LocalDateTime.parse("2019-06-11", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate() ;
+        Date endTime = LocalDateTime.parse("2019-06-11", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
         //昨日凌晨
-        Date startTime = LocalDateTime.parse("2019-06-09", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate() ;
+        Date startTime = LocalDateTime.parse("2019-06-09", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
         System.out.println(endTime);
         System.out.println(startTime);
-        System.out.println(LocalDateTime.parse("2019-06-11", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate() );
+        System.out.println(LocalDateTime.parse("2019-06-11", DateTimeFormat.forPattern("yyyy-MM-dd")).toDate());
 
 
         //今天凌晨
@@ -63,12 +62,5 @@ public class Constant {
         // 范围精确到周
         Period period = new Period(DateTime.parse("19170611", DateTimeFormat.forPattern("yyyyMMdd")).toLocalDate(), DateTime.now().toLocalDate(), PeriodType.yearWeekDay());
         System.out.println(period.getYears());
-        Map<String,String> hmap = new HashMap<>();
-        hmap.put("registerPlatform","111");
-        if (!"1206".equals(hmap.get("registerPlatform")) && !"11".equals(hmap.get("registerPlatform"))) {
-            System.out.println("1212");
-        }
-
-        System.out.println("法法");
     }
 }

@@ -52,7 +52,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @ExceptionHandler(BaseServiceException.class)
     public ErrorResponse baseServiceException(BaseServiceException e) {
-        logger.error("BaseServiceException={}", e);
+        logger.error("BaseServiceException={}", e.getMessage(),e);
         // 自定义消息
         String msg = e.getMsg();
         return new ErrorResponse(e.getCode(), msg, e.getMessage());
@@ -147,7 +147,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return jsonObj.getString("token");
             }
         } catch (Exception e) {
-            logger.error("getHttpToken exception={}", e);
+            logger.error("getHttpToken exception={}", e.getMessage(),e);
         }
         return null;
     }

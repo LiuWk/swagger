@@ -61,7 +61,7 @@ public class UserController {
                 return new ErrorResponse(Code.PARAMETER_IS_NULL, Constant.getMsg(Code.PARAMETER_IS_NULL));
             }
         } catch (Exception e) {
-            logger.error("login convert request exception={}", e);
+            logger.error("login convert request exception={}", e.getMessage(),e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
         // 加锁
@@ -85,7 +85,7 @@ public class UserController {
             LoginDto loginDto = userService.login(user);
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), loginDto);
         } catch (Exception e) {
-            logger.error("saveCustomer exception={}", e);
+            logger.error("saveCustomer exception={}", e.getMessage(),e);
         } finally {
             lockService.deleteLock(lockKey);
         }
@@ -117,7 +117,7 @@ public class UserController {
                 return new ErrorResponse(Code.MOBILE_FORMAT_INCORRECT, Constant.getMsg(Code.MOBILE_FORMAT_INCORRECT));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("register exception={}", e.getMessage(),e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
@@ -148,7 +148,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            logger.error("register exception={}", e);
+            logger.error("register exception={}", e.getMessage(),e);
         } finally {
             lockService.deleteLock(lockKey);
         }

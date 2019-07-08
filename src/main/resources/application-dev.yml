@@ -4,10 +4,10 @@ server:
 spring:
   # 数据库配置
   datasource:
-    name: baihe_userCloud_userAccount
-    url: jdbc:mysql://10.240.169.111:3306/baihe_userCloud_userAccount?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    name: sakila
+    url: jdbc:mysql://192.168.169.129:3306/sakila?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=GMT
     username: root
-    password: Baihe520!@#
+    password: 123456
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -77,8 +77,8 @@ spring:
       ddl-auto: update
   # redis配置
   redis:
-    host: 127.0.0.1
-    password:
+    host: 192.168.169.129
+    password: 123456
     port: 6379
     database: 0
     timeout: 10000

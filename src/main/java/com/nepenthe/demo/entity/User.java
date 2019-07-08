@@ -19,8 +19,6 @@ public class User {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createTime;
 
-  private Object obj;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Integer getId() {
@@ -39,6 +37,7 @@ public class User {
     this.name = name;
   }
 
+  @Column(columnDefinition = "TINYINT")
   public Integer getGender() {
     return gender;
   }

@@ -63,7 +63,7 @@ public class CustomerController {
             }
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), customerService.findCustomerByCustomerId(customerId));
         } catch (Exception e) {
-            logger.error("customerInfo exception={}", e);
+            logger.error("customerInfo exception={}", e.getMessage(),e);
         }
         return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
     }
@@ -82,7 +82,7 @@ public class CustomerController {
             page = req.getBody().getInteger("page");
             size = req.getBody().getInteger("size");
         } catch (Exception e) {
-            logger.error("customerList exception={}", e);
+            logger.error("customerList exception={}", e.getMessage(), e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
@@ -105,7 +105,7 @@ public class CustomerController {
             token = req.getToken();
             customer = req.getBody().toJavaObject(Customer.class);
         } catch (Exception e) {
-            logger.error("转换对象异常={}", e);
+            logger.error("转换对象异常={}", e.getMessage(), e);
             return new ErrorResponse(Code.SYSTEM_ERROR, Constant.getMsg(Code.SYSTEM_ERROR));
         }
 
@@ -119,7 +119,7 @@ public class CustomerController {
             customerService.saveCustomer(customer);
             return new Response(Code.SUCCESS, Constant.getMsg(Code.SUCCESS), null);
         } catch (Exception e) {
-            logger.error("saveCustomer exception={}", e);
+            logger.error("saveCustomer exception={}", e.getMessage(), e);
         } finally {
             lockService.deleteLock(lockKey);
         }

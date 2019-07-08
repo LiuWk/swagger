@@ -44,27 +44,9 @@ public class ZKClient {
         client = CuratorFrameworkFactory.builder().connectString(zkServer)
                 .sessionTimeoutMs(sessionTimeoutMs)
                 .retryPolicy(retryPolicy)
-                .namespace("lwktest")
+                .namespace("demo_zk")
                 .build();
         client.start();
-    }
-
-    /**
-     * 在quartz节点执行任务之前，创建zk节点
-     *
-     * @return
-     */
-    public boolean lock(String lockId) {
-        String path = "/".concat(lockId);
-        boolean bool = false;
-        try {
-            String p = client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
-            bool = true;
-            logger.info("node path:{}", p);
-        } catch (Exception e) {
-            logger.error("lockJob exception:{}", e.getMessage());
-        }
-        return bool;
     }
 
     /**
@@ -87,6 +69,7 @@ public class ZKClient {
             client.create().withMode(createMode).forPath(path, data.getBytes());
         } catch (Exception e) {
             e.printStackTrace();
+            //org.apache.zookeeper.KeeperException$NodeExistsException: KeeperErrorCode = NodeExists
             return false;
         }
 
@@ -110,12 +93,29 @@ public class ZKClient {
     }
 
     /**
-     * 删除所
+     * 在quartz节点执行任务之前，创建zk节点
      *
-     * @param lockId
+     * @return
      */
-    public void unlock(String lockId) {
-        String path = "/".concat(lockId);
+    public boolean lock(String lockKey) {
+        String path = "/".concat(lockKey);
+        boolean bool = false;
+        try {
+            String p = client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
+            bool = true;
+            logger.info("node path:{}", p);
+        } catch (Exception e) {
+            logger.error("lockJob exception:{}", e.getMessage());
+        }
+        return bool;
+    }
+    /**
+     * 删除锁
+     *
+     * @param lockKey
+     */
+    public void unlock(String lockKey) {
+        String path = "/".concat(lockKey);
         try {
             client.delete().forPath(path);
         } catch (Exception e) {

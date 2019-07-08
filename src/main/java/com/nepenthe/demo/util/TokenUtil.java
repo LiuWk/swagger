@@ -32,7 +32,7 @@ public class TokenUtil {
                     // 以 password 作为 token 的密钥
                     .sign(Algorithm.HMAC256(user.getPassword()));
         } catch (Exception e) {
-            logger.error("getToken exception", e);
+            logger.error("getToken exception", e.getMessage(),e);
         }
         return token;
     }

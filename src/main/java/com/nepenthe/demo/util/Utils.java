@@ -45,7 +45,7 @@ public class Utils {
             }
             return JSONObject.parseObject(json, Request.class);
         } catch (Exception e) {
-            logger.error("getRequest exception={}", e);
+            logger.error("getRequest exception={}", e.getMessage(),e);
         }
         return null;
     }
@@ -88,39 +88,9 @@ public class Utils {
         return false;
     }
 
-    public static void exportExcelTest() {
-        HSSFWorkbook workbook = null;
-        // 创建工作表(Sheet)
-        workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Test");
-        // 创建行,从0开始
-        HSSFRow row = sheet.createRow(0);
-        // 创建行的单元格,也是从0开始
-        HSSFCell cell = row.createCell(0);
-        // 设置单元格内容
-//            cell.setCellValue("少时诵诗书");
-        row.createCell(0).setCellValue("少时诵诗书");
-        // 设置单元格内容,重载
-        row.createCell(1).setCellValue(false);
-        // 设置单元格内容,重载
-        row.createCell(2).setCellValue(new Date());
-        // 设置单元格内容,重载
-        row.createCell(3).setCellValue(12.345);
-        row.createCell(4).setCellValue("啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊" +
-                "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
-        sheet.autoSizeColumn(40);
-        try {
-            FileOutputStream fos = new FileOutputStream(new File("F:\\doc\\test.xls"));
-            workbook.write(fos);
-            workbook.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
-        System.out.println(md5("123456", "14400001112"));
+        System.out.println(md5("123456", "15211110000"));
         System.out.println(hasEmpty(null, ""));
     }
 }

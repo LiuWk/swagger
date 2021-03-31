@@ -27,7 +27,7 @@
         <jwt.version>3.4.0</jwt.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <poi.version>4.1.0</poi.version>
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <joda-time.version>2.10.2</joda-time.version>
         <curator.version>4.2.0</curator.version>
         <zookeeper.version>3.5.5</zookeeper.version>
